@@ -93,7 +93,8 @@ class FolderParser:
         for root, subFolder, files in os.walk(DATA_DIR):
             list_dir.append(subFolder)
 
-        for directory in tqdm(list_dir[0], desc='Images from ' + str(DATA_DIR) + ' extraction', ncols=100):
+        for directory in tqdm(list_dir[0], desc='Images from ' + str(DATA_DIR) + ' extraction', ncols=100, ascii=' ▮',
+                                bar_format="{desc} | {percentage:.0f}% |{bar}{r_bar}"):
             IMG_DIR = os.path.join(DATA_DIR, directory)
             image_names = os.listdir(IMG_DIR)
             for img in image_names:
