@@ -1,8 +1,6 @@
 # InfluenceCalculations
 Influence calculations based on tensorflow 2
 
-![](https://imgur.com/ENq9A4R.jpg)
-![](https://imgur.com/WDcUEAX.jpg)
 
 **Requirements**
 
