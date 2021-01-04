@@ -1,6 +1,9 @@
 # InfluenceCalculations
 Influence calculations based on tensorflow 2
 
+![](https://imgur.com/4nE2YyY.jpg)
+![](https://imgur.com/zfOYrsW.jpg)
+
 **Notes**
 
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
@@ -15,6 +18,7 @@ Args:
 -mod  :   path to folders (it may be many folders) with modified images, separated by space
 -o    :   output filename of archive  
 ```
+_**Note**: it's necessary to provide `orig` folder to `-mod` as well because this name is required for influence calculation_
 
 Usage:
 ```console
