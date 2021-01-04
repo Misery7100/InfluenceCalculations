@@ -5,7 +5,7 @@ Influence calculations based on tensorflow 2
 
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them
 
-## `prepare_data.py`
+## <font color='darkblue'>`prepare_data.py`</font>
 This script make initial data processing. It takes photos from their directories and create archive with labeled arrays by them classes from these photos.
 Args: 
 ```
