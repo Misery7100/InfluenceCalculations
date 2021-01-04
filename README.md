@@ -38,6 +38,15 @@ This script takes a preprocessed data from archive (e.g. final_cut.npz) and:
 1. Unpack randomcore and test data, from test_y takes all unique labels and choose from extra data subset by choosed label. After it saves them into archives, e.g. `label_number.npz`.
 2. Preprocess images and labels. Create instance model (vgg16).
 3. Run through all labels, inside every labels run through all extra data (modified images)
+4. Save top 5 harmful and useful images by influence and full influence dict (`.npy`) for each test image into `label_number/`
+
+Args: 
+```
+-tr   :   path to folder with train ulabeled images
+-ts   :   path to folder with test labeled images
+-mod  :   path to folders (it may be many folders) with modified images, separated by space
+-o    :   output filename of archive  
+```
 
 ##### console ...
 
