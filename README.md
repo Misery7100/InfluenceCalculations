@@ -1,6 +1,10 @@
 # InfluenceCalculations
 Influence calculations based on tensorflow 2
 
+**Notes**
+
+- There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them
+
 ## `prepare_data.py`
 This script make initial data processing. It takes photos from their directories and create archive with labeled arrays by them classes from these photos.
 Args: 
@@ -28,6 +32,12 @@ Creating an archive from arrays... finished
 Archive created. Uploading array's names:
 ['randcore_x', 'randcore_y', 'test_x', 'test_y', 'orig_x', 'orig_y', 'styled_x', 'styled_y', 'texture_x', 'texture_y', 'wb_x', 'wb_y']
 ```
+
+## `calculate.py`
+This script takes a preprocessed data from archive (e.g. final_cut.npz) and:
+1. Unpack randomcore and test data, from test_y takes all unique labels and choose from extra data subset by choosed label. After it saves them into archives, e.g. `label_number.npz`.
+2. Preprocess images and labels. Create instance model (vgg16).
+3. Run through all labels, inside every labels run through all extra data (modified images)
 
 ##### console ...
 
