@@ -18,7 +18,7 @@ Args:
 
 Usage:
 ```console
-python prepare_data.py -tr train -ts test -mod wb styled texture orig -o final_cut
+python prepare_data.py -tr train -ts test -mod orig wb -o final_cut
 ```
 
 Normal console output
@@ -49,7 +49,7 @@ Args:
 
 Usage:
 ```console
-python calculate.py -z final_cut -it 300 -bs 8 -sv pdf
+python calculate.py -z final_cut -it 10 -bs 8 -sv pdf
 ```
 
 Normal console output
@@ -91,5 +91,7 @@ Inf. calculation | 00:07 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮
 Top 5 harmful		->	14/harmful_styled_2.pdf
 Top 5 useful		->	14/useful_styled_2.pdf
 All influences dict	->	14/styled_2.npy
+
+...
 
 ```
