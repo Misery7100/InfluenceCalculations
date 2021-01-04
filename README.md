@@ -42,13 +42,18 @@ This script takes a preprocessed data from archive (e.g. final_cut.npz) and:
 
 Args: 
 ```
--tr   :   path to folder with train ulabeled images
--ts   :   path to folder with test labeled images
--mod  :   path to folders (it may be many folders) with modified images, separated by space
--o    :   output filename of archive  
+-z    :   path to compressed .npz file name with prepared data
+-it   :   recursion depth for IHVP calculations
+-bs   :   batch size for IHVP calculations
+-sv   :   output format for matplotlib figures
 ```
 
-##### console ...
+Usage:
+```
+python calculate.py -z final_cut -it 300 -bs 8 -sv pdf
+```
+
+##### console2...
 
 ```
 ...
