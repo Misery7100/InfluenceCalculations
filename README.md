@@ -9,6 +9,15 @@ Influence calculations based on tensorflow 2
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
 - Added some improvements such as sumup gradients calculation to speed up a process.
 
+## Data used
+- Tiny ImageNET dataset and ILSVRC2012 which are available on official web-site: http://www.image-net.org (authorization required)
+- Links to images and `.npz` used in test calculations: https://yadi.sk/d/2iiR5VcePjRHZA, https://yadi.sk/d/5r81HdDcfpv1Kw
+
+## Preprocessing data for test calculations
+1. Styled images: pre-trained model https://github.com/misgod/fast-neural-style-keras
+2. Textured image: additive software MATLAB with VGG19 CNN https://www.mathworks.com/help/images/neural-style-transfer-using-deep-learning.html
+3. Background removal: manual editing, cause pre-trained model don't show correct results on our images
+
 ## `prepare_data.py`
 This script make initial data processing. It takes photos from their directories and create archive with labeled arrays by them classes from these photos.
 Args: 
