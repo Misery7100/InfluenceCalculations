@@ -53,7 +53,7 @@ Usage:
 python calculate.py -z final_cut -it 300 -bs 8 -sv pdf
 ```
 
-Nornmal console output
+Normal console output
 
 ```
 
