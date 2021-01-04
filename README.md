@@ -20,7 +20,7 @@ Usage:
 python prepare_data.py -tr train -ts test -mod wb styled texture orig -o final_cut
 ```
 
-##### console1...
+Normal console output
 ```
 Images from train extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1000/1000 [00:00<00:00, 6578.50it/s]
 Images from test extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<?, ?it/s]
@@ -53,10 +53,9 @@ Usage:
 python calculate.py -z final_cut -it 300 -bs 8 -sv pdf
 ```
 
-##### console2...
+Nornmal console output
 
 ```
-...
 
 Extracting data, creating instance
 
@@ -94,5 +93,4 @@ Top 5 harmful		->	14/harmful_styled_2.pdf
 Top 5 useful		->	14/useful_styled_2.pdf
 All influences dict	->	14/styled_2.npy
 
-...
 ```
