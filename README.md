@@ -3,7 +3,8 @@ Influence calculations based on tensorflow 2
 
 **Notes**
 
-- There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them
+- There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
+- Added some improvements such as sumup gradients calculation to speed up a process.
 
 ## `prepare_data.py`
 This script make initial data processing. It takes photos from their directories and create archive with labeled arrays by them classes from these photos.
