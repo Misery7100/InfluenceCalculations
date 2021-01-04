@@ -59,10 +59,16 @@ class Influence:
         test_y = self.to_categorical(test_y)
         
         influence_data, influence_labels = {}, {}
-        for i in range(len(custom_data.files[2::2])):
-            x, y = custom_data.files[2::2][i], custom_data.files[3::2][i]
-            influence_data[x] = np.concatenate([custom_data['orig_x'], custom_data[x]])
-            influence_labels[y] = np.concatenate([custom_data['orig_y'], custom_data[y]])
+
+        if len(custom_data.files) == 2:
+            influence_data['orig_x'] = custom_data['orig_x']
+            influence_labels['orig_y'] = custom_data['orig_y']
+
+        else:
+            for i in range(len(custom_data.files[2::2])):
+                x, y = custom_data.files[2::2][i], custom_data.files[3::2][i]
+                influence_data[x] = np.concatenate([custom_data['orig_x'], custom_data[x]])
+                influence_labels[y] = np.concatenate([custom_data['orig_y'], custom_data[y]])
         
         print('Preprocessing data... ', end='')
 
