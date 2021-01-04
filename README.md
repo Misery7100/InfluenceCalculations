@@ -9,16 +9,18 @@ Influence calculations based on tensorflow 2
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
 - Added some improvements such as sumup gradients calculation to speed up a process.
 
-## Data used
+### Data used
 - Tiny ImageNET dataset and ILSVRC2012 which are available on official web-site: http://www.image-net.org (authorization required)
 - Links to images and `.npz` used in test calculations: https://yadi.sk/d/2iiR5VcePjRHZA, https://yadi.sk/d/5r81HdDcfpv1Kw
 
-## Preprocessing data for test calculations
+### Preprocessing data for test calculations
 1. Styled images: pre-trained model https://github.com/misgod/fast-neural-style-keras
 2. Textured image: additive software MATLAB with VGG19 CNN https://www.mathworks.com/help/images/neural-style-transfer-using-deep-learning.html
 3. Background removal: manual editing, cause pre-trained model don't show correct results on our images
 
-## `prepare_data.py`
+## Scripts
+
+### `prepare_data.py`
 This script make initial data processing. It takes photos from their directories and create archive with labeled arrays by them classes from these photos.
 Args: 
 ```
@@ -45,7 +47,7 @@ Archive created. Uploading array's names:
 ['randcore_x', 'randcore_y', 'test_x', 'test_y', 'orig_x', 'orig_y', 'wb_x', 'wb_y']
 ```
 
-## `calculate.py`
+### `calculate.py`
 This script takes a preprocessed data from archive (e.g. final_cut.npz) and:
 1. Unpack randomcore and test data, from test_y takes all unique labels and choose from extra data subset by choosed label. After it saves them into archives, e.g. `label_number.npz`.
 2. Preprocess images and labels. Create instance model (vgg16).
