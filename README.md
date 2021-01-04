@@ -16,6 +16,18 @@ Usage:
 python prepare_data.py -tr train -ts test -mod wb styled texture orig -o final_cut
 ```
 
+##### console1...
+```
+Images from train extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1000/1000 [00:00<00:00, 6578.50it/s]
+Images from test extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<?, ?it/s]
+Images from orig extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<00:00, 10104.32it/s]
+Images from styled extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<00:00, 9899.23it/s]
+Images from texture extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<00:00, 10097.02it/s]
+Images from wb extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<00:00, 9995.96it/s]
+Creating an archive from arrays... finished
+Archive created. Uploading array's names:
+['randcore_x', 'randcore_y', 'test_x', 'test_y', 'orig_x', 'orig_y', 'styled_x', 'styled_y', 'texture_x', 'texture_y', 'wb_x', 'wb_y']
+```
 
 ##### console ...
 
