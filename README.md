@@ -9,6 +9,7 @@ Influence calculations based on tensorflow 2
 - `tqdm==4.50.2`
 - `numpy==1.18.5`
 - `matplotlib==3.3.1`
+- `pillow==8.0.0`
 
 **Notes**
 
