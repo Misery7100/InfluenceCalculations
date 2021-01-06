@@ -69,7 +69,7 @@ Args:
 
 Usage:
 ```console
-python prepare_data.py -ts orig wb styled texture
+python prepare_only_test.py -ts orig wb styled texture
 ```
 
 Console output
