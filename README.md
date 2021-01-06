@@ -129,7 +129,16 @@ All influences dict	->	calc_output/orig/779/1.npy
 
 1. Make sure you have all files downloaded and all requirements installed
 2. Check your RAM and CPU/GPU usage, free up as much memory as possible to avoid freezes
-3. Make sure you have train folder and test folders
+3. Make sure you have train folder and test folders in the same folder with `.py` scripts
     * train folder should contain 1000 folders (if we consider 1k-class classification task) named according to ImageNet notation (from `n01440764` to `n15075141`)
     * test folders should contain folders named according to mapped classes (from `0` to `999`)
-
+4. Make sure you have enough memory space on your disk (usually it's about 3 * images_archive_size)
+4. Prepare data using `prepare_data.py` with the following command: `python prepare_data.py -tr train -ts [test folders] -bs [batch size]`
+    * `[test folders]` may be `orig wb texture` for example
+    * recommended batch size is 200
+    * after packing batches script will be silent about 2-3 minutes (`train.npz` processing)
+5. Start calculations using `calculate.py` with the following command: `python calculate.py -i [iter number] -b [batch size] -sf pdf`
+    * recommended batch size for calculations is 10 but you can use any number is you have enough memory
+    * for VGG16 each iteration with batch size 10 takes about 15 s
+    * it's possible to use fully stochastic estimation using batch sise equals to 1 and it'll speed up a process of calculations (~2s/it)
+6. Check results in `calc_output` folder
