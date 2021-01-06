@@ -145,3 +145,6 @@ All influences dict	->	calc_output/orig/779/1.npy
     * output dict contains keys in format `[batch_number]_[index]` so you can easy find an image using: 
     `np.load('train.npz')[f'train_x_{batch_number}'][index]`
 
+## References
+
+* Koh, P. and Liang, P., 2017. _Understanding Black-Box Predictions Via Influence Functions_
