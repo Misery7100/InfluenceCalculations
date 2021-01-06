@@ -92,57 +92,43 @@ This script takes a preprocessed data from archives `train.npz` and `test.npz` a
 
 Args: 
 ```
--z    :   path to compressed .npz file name with prepared data
--it   :   recursion depth for IHVP calculations
--bs   :   batch size for IHVP calculations
--sv   :   output format for matplotlib figures
+-i   :   recursion depth for IHVP calculations
+-b   :   batch size for IHVP calculations
+-sf   :   output format for matplotlib figures
 ```
 
 Usage:
 ```console
-python calculate.py -z final_cut -it 10 -bs 8 -sv pdf
+python calculate.py -i 20 -bs 8 -sf pdf
 ```
 
 Console output
 
 ```
-
-Extracting data, creating instance
-
-Creating label subset for 14 class... finished
-Creating label subset for 281 class... finished
-Creating label subset for 340 class... finished
-Creating label subset for 385 class... finished
-Creating label subset for 444 class... finished
-Creating label subset for 559 class... finished
-Creating label subset for 779 class... finished
-Creating label subset for 784 class... finished
-Creating label subset for 859 class... finished
-Creating label subset for 968 class... finished
+... (maybe some tensorflow warnings)
 
 Start calculating all influences
 
-Preprocessing data... finished
-
-
-Calculating influence for styled data, label: 14
+Calculating influences for folder: orig
+Create label subset for 779 class... finished
+Calculating influences for class: 779
 
 Test image #1 in process
 Calculating gradients for test image... finished
-IHVP calculation | 01:28 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [01:28<00:00,  8.82s/it]
-Inf. calculation | 00:07 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 9/9 [00:07<00:00,  1.17it/s]
-Top 5 harmful		->	14/harmful_styled_1.pdf
-Top 5 useful		->	14/useful_styled_1.pdf
-All influences dict	->	14/styled_1.npy
-
-Test image #2 in process
-Calculating gradients for test image... finished
-IHVP calculation | 01:32 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [01:32<00:00,  9.28s/it]
-Inf. calculation | 00:07 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 9/9 [00:07<00:00,  1.22it/s]
-Top 5 harmful		->	14/harmful_styled_2.pdf
-Top 5 useful		->	14/useful_styled_2.pdf
-All influences dict	->	14/styled_2.npy
+IHVP calculation | 07:57 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 20/20 [07:57<00:00, 23.85s/it]
+Batch influences | 01:56 est. | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 139/139 [01:56<00:00,  1.19it/s]
+Top 5 harmful		->	calc_output/orig/779/harmful_1.pdf
+Top 5 useful		->	calc_output/orig/779/useful_1.pdf
+All influences dict	->	calc_output/orig/779/1.npy
 
 ...
 
 ```
+
+## User guide
+
+1. Make sure you have all files downloaded and all requirements installed
+2. Check your RAM and CPU/GPU usage, free up as much memory as possible to avoid freezes
+3. Make sure you have train folder and test folders
+  - train folder should contain 1000 folders (if we consider 1k-class classification task) named according to ImageNet notation (from `n01440764` to `n15075141`)
+  - test folders should contain folders named according to mapped classes (from `0` to `999`)
