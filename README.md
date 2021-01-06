@@ -128,7 +128,7 @@ All influences dict	->	calc_output/orig/779/1.npy
 ## User guide
 
 1. Make sure you have all files downloaded and all requirements installed
-2. Check your RAM and CPU/GPU usage, free up as much memory as possible to avoid freezes
+2. Check your RAM and CPU/GPU usage, free up as many memory as possible to avoid freezes
 3. Make sure you have train folder and test folders in the same folder with `.py` scripts
     * train folder should contain 1000 folders (if we consider 1k-class classification task) named according to ImageNet notation (from `n01440764` to `n15075141`)
     * test folders should contain folders named according to mapped classes (from `0` to `999`)
@@ -142,3 +142,5 @@ All influences dict	->	calc_output/orig/779/1.npy
     * for VGG16 each iteration with batch size 10 takes about 15 s
     * it's possible to use fully stochastic estimation using batch sise equals to 1 and it'll speed up a process of calculations (~2s/it)
 6. Check results in `calc_output` folder (you can do it any time)
+    * output dict contains keys in format `[batch_number]_[index]` so you can easy find an image using:`np.load('train.npz')[f'train_x_{batch_number}'][f'{index}']`
+
