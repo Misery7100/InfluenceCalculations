@@ -1,6 +1,8 @@
 # InfluenceCalculations
 Influence calculations based on tensorflow 2
 
+![](https://imgur.com/twNmNHM.jpg)
+![](https://imgur.com/heNuGVO.jpg)
 
 **Requirements**
 
@@ -15,44 +17,70 @@ Influence calculations based on tensorflow 2
 **Notes**
 
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
-- Added some improvements such as sumup gradients calculation to speed up a process.
+- Added sumup gradients calculation to speed up a process;
+- Added batch packaging for train data to reduce memory usage in calculation process.
 
 ### Data used
 - Tiny ImageNET dataset and ILSVRC2012 which are available on official web-site: http://www.image-net.org (authorization required)
-- Links to images and `.npz` used in test calculations: https://yadi.sk/d/2iiR5VcePjRHZA, https://yadi.sk/d/5r81HdDcfpv1Kw
+- Links to images used in test calculations: < links >
 
 ### Preprocessing data for test calculations
 1. Styled images: pre-trained model https://github.com/misgod/fast-neural-style-keras
 2. Textured image: additive software MATLAB with VGG19 CNN https://www.mathworks.com/help/images/neural-style-transfer-using-deep-learning.html
 3. Background removal: manual editing, cause pre-trained model don't show correct results on our images
 
-## Scripts
+## Scripts description
 
 ### `prepare_data.py`
 This script make initial data processing. It takes photos from their directories and create archive with labeled arrays by them classes from these photos.
 Args: 
 ```
--tr   :   path to folder with train ulabeled images
--ts   :   path to folder with test labeled images
--mod  :   path to folders (it may be many folders) with modified images, separated by space
--o    :   output filename of archive  
+-tr   :   path to folder with train labeled images
+-ts   :   path to folders with test labeled images (it may be many folders)
+-bs   :   batch size for splitting train data
 ```
-_**Note**: it's necessary to provide `orig` folder to `-mod` as well because this name is required for influence calculation_
 
 Usage:
 ```console
-python prepare_data.py -tr train -ts test -mod orig wb -o final_cut
+python prepare_data.py -tr train -ts orig wb texture styled -bs 150
 ```
 
-Normal console output
+Console output
 ```
-Images from train extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1000/1000 [00:00<00:00, 6578.50it/s]
-Images from test extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<?, ?it/s]
-Images from orig extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<00:00, 10104.32it/s]
-Images from wb extraction | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 10/10 [00:00<00:00, 9995.96it/s]
-Creating an archive from arrays... finished
-Archive created. Uploading array's names:
-['randcore_x', 'randcore_y', 'test_x', 'test_y', 'orig_x', 'orig_y', 'wb_x', 'wb_y']
+... (maybe some tensorflow warnings)
+
+Parse train | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1000/1000 [00:00<00:00, 1861.83it/s]
+Pack batches | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 139/139 [09:09<00:00,  3.96s/it]
+Create train archive... finished
+Parse orig | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 12710.01it/s]
+Parse wb | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 19418.07it/s]
+Parse styled | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 19239.93it/s]
+Parse texture | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 20971.52it/s]
+Create test archive... finished
+```
+
+### `prepare_only_test.py`
+This script make initial data processing for test data. It takes photos from their directories and create archive with labeled arrays by them classes from these photos. Additional script to avoid train data reprocessing each time.
+Args: 
+
+```
+-ts   :   path to folders with test labeled images (it may be many folders)
+```
+
+Usage:
+```console
+python prepare_data.py -ts orig wb texture styled
+```
+
+Console output
+```
+... (maybe some tensorflow warnings)
+
+Parse orig | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 12710.01it/s]
+Parse wb | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 19418.07it/s]
+Parse styled | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 19239.93it/s]
+Parse texture | 100% |▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮| 1/1 [00:00<00:00, 20971.52it/s]
+Create test archive... finished
 ```
 
 ### `calculate.py`
@@ -75,7 +103,7 @@ Usage:
 python calculate.py -z final_cut -it 10 -bs 8 -sv pdf
 ```
 
-Normal console output
+Console output
 
 ```
 
