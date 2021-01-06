@@ -141,4 +141,4 @@ All influences dict	->	calc_output/orig/779/1.npy
     * recommended batch size for calculations is 10 but you can use any number is you have enough memory
     * for VGG16 each iteration with batch size 10 takes about 15 s
     * it's possible to use fully stochastic estimation using batch sise equals to 1 and it'll speed up a process of calculations (~2s/it)
-6. Check results in `calc_output` folder
+6. Check results in `calc_output` folder (you can do it any time)
