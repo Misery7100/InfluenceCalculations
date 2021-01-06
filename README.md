@@ -42,7 +42,7 @@ Args:
 
 Usage:
 ```console
-python prepare_data.py -tr train -ts orig wb texture styled -bs 150
+python prepare_data.py -tr train -ts orig wb styled texture -bs 150
 ```
 
 Console output
@@ -69,7 +69,7 @@ Args:
 
 Usage:
 ```console
-python prepare_data.py -ts orig wb texture styled
+python prepare_data.py -ts orig wb styled texture
 ```
 
 Console output
@@ -99,7 +99,7 @@ Args:
 
 Usage:
 ```console
-python calculate.py -i 20 -bs 8 -sf pdf
+python calculate.py -i 20 -bs 16 -sf pdf
 ```
 
 Console output
