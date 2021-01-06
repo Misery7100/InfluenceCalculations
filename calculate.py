@@ -22,14 +22,12 @@ if __name__ == '__main__':
                         help='Output format for matplotlib figures')
 
 
-	args = parser.parse_args() 	# parse args
+	args = parser.parse_args()	# parse args
 	model = VGG16()				# create VGG16 instance
 
 	# create Influence instance
 
-	influence = Influence(train_npz='train.npz', 
-							test_npz='test.npz',
-							model=model) 
+	influence = Influence(train_npz='train.npz', test_npz='test.npz', model=model) 
 
 	start_time = time.time() # store start time
 
