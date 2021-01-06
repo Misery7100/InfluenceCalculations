@@ -22,7 +22,7 @@ Influence calculations based on tensorflow 2
 
 ### Data used
 - Tiny ImageNET dataset and ILSVRC2012 which are available on official web-site: http://www.image-net.org (authorization required)
-- Links to images used in test calculations: < links >
+- Links to images used in test calculations: https://yadi.sk/d/c0HCyhxD77hW9g
 
 ### Preprocessing data for test calculations
 1. Styled images: pre-trained model https://github.com/misgod/fast-neural-style-keras
