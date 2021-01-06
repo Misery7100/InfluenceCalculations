@@ -4,6 +4,7 @@ import time
 from tensorflow.python.ops.math_ops import multiply as ops_mult
 from tensorflow.python.ops.array_ops import stop_gradient as stop_grad
 from keras.losses import categorical_crossentropy
+from keras.applications.vgg16 import preprocess_input
 from tqdm import tqdm
 
 
@@ -20,7 +21,7 @@ class TqdmExtraFormat(tqdm):
 # main class
 class InfluenceCalc:
 
-    def __init__(self, model=None, loss=lambda l, p: tf.norm(l - p), damping=1e-4):
+    def __init__(self, model=None, loss=lambda l, p: tf.norm(l - p), damping=1e-4, n_classes=1000, preprocess_input=preprocess_input):
         if model is None:
             raise ValueError('model cannot be NoneType') # raise error if no model
             
@@ -29,6 +30,8 @@ class InfluenceCalc:
         self.len_weights = len(self.weights)
         self.loss = loss
         self.damping = damping
+        self.n_classes = n_classes
+        self.preprocess_input = preprocess_input
         self.test_grad = None
     
     # elemwise product with gradient stopping
@@ -103,12 +106,20 @@ class InfluenceCalc:
         new_ihvp = [g + self.damping*v - hv / scale for g, hv, v in zip(test_gradient, iter_grads, cur_v)] # calculate new ihvp tensors
 
         return new_ihvp
+
+    def to_categorical(self, label):
+        output = []
+        for l in label:
+            enc = np.zeros((self.n_classes))
+            enc[int(l)] = 1
+            output.append(enc)
+        return np.array(output, dtype=np.int32)
     
     # main function of ihvp calculating
-    def inverse_hessian_vector_products(self, data, labels, test_data, test_label,
+    def inverse_hessian_vector_products(self, train, n_batches, test_data, test_label,
                                        num_iter=101, stochast_batch_size=8,
                                        scale=1e0, parallel=True):
-        start_time = time.time() # count all time
+        #start_time = time.time() # count all time
         
         print('Calculating gradients for test image...', end=' ')
         
@@ -118,6 +129,9 @@ class InfluenceCalc:
         
         time.sleep(0.5) # sleep to avoid early print 
         current_v = self.test_grad # init current v for hv calculation as test grad
+        current_batch = np.random.randint(n_batches)
+        data = self.preprocess_input(train[f'train_x_{current_batch}'])
+        labels = self.to_categorical(train[f'train_y_{current_batch}'])
         current_ihvp = None
         stochast_batch_range = len(data)
         
@@ -132,19 +146,21 @@ class InfluenceCalc:
             current_v = current_ihvp
         
         current_ihvp = [e / scale for e in current_ihvp]
-        total_time = time.time() - start_time # calculate full time
+        #total_time = time.time() - start_time # calculate full time
+
+        del data, labels
         
-        return current_ihvp, current_v
+        return current_ihvp
     
     # calculate ihvp for each layer (wrapper)
-    def calculate(self, data, labels, test_data, test_label, num_iter=101, 
+    def calculate(self, train, n_batches, test_data, test_label, num_iter=101, 
                   stochast_batch_size=8, scale=1e3, parallel=True):
         
-        ihvp, v = self.inverse_hessian_vector_products(data, labels, test_data, 
+        ihvp = self.inverse_hessian_vector_products(train, n_batches, test_data, 
                                                     test_label, num_iter,
                                                     stochast_batch_size, 
-                                                    scale, parallel=parallel)
-        return ihvp, v, self.test_grad
+                                                    scale=scale, parallel=parallel)
+        return ihvp, self.test_grad
 
     #helper makes elements in tensor (0 axis) flatten
     def flatten_tensor_elements(self, tensor):
