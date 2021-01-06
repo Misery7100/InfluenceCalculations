@@ -90,7 +90,7 @@ class Influence:
             os.remove(path)
                 
     def init_calc_instance(self, damping=1e-2):
-        self.calc_instance = InfluenceCalc(self.model, damping=damping)
+        self.calc_instance = InfluenceCalc(self.model, damping=damping, n_classes=self.n_classes)
     
     def calculate_all_influences(self, num_iter=30, batch_size=8, save_format='pdf', scale=1e3):
         
