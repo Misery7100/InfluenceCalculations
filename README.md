@@ -130,5 +130,6 @@ All influences dict	->	calc_output/orig/779/1.npy
 1. Make sure you have all files downloaded and all requirements installed
 2. Check your RAM and CPU/GPU usage, free up as much memory as possible to avoid freezes
 3. Make sure you have train folder and test folders
-  - train folder should contain 1000 folders (if we consider 1k-class classification task) named according to ImageNet notation (from `n01440764` to `n15075141`)
-  - test folders should contain folders named according to mapped classes (from `0` to `999`)
+    * train folder should contain 1000 folders (if we consider 1k-class classification task) named according to ImageNet notation (from `n01440764` to `n15075141`)
+    * test folders should contain folders named according to mapped classes (from `0` to `999`)
+
