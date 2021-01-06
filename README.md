@@ -60,7 +60,7 @@ Create test archive... finished
 ```
 
 ### `prepare_only_test.py`
-This script make initial data processing for test data. It takes photos from their directories and create archive with labeled arrays by them classes from these photos. Additional script to avoid train data reprocessing each time.
+Additional script to avoid train data reprocessing each time.
 Args: 
 
 ```
@@ -84,11 +84,11 @@ Create test archive... finished
 ```
 
 ### `calculate.py`
-This script takes a preprocessed data from archive (e.g. final_cut.npz) and:
-1. Unpack randomcore and test data, from test_y takes all unique labels and choose from extra data subset by choosed label. After it saves them into archives, e.g. `label_number.npz`.
-2. Preprocess images and labels. Create instance model (vgg16).
-3. Run through all labels, inside every labels run through all extra data (modified images)
-4. Save top 5 harmful and useful images by influence and full influence dict (`.npy`) for each test image into `label_number/`
+This script takes a preprocessed data from archives `train.npz` and `test.npz` and calculates influences of train data on test data. Detailed:
+
+1. Create instance model (VGG16 in our particular case);
+3. Run through all test folders label by label, firstly calculate inverse hessian vector products and after calculate influences of train data with the same label;
+4. Save top 5 harmful and useful images by influence and full influence dict (`.npy`) for each test image into `calc_output/<test_folder>/<label>`
 
 Args: 
 ```
