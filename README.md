@@ -42,10 +42,10 @@ Args:
 
 Usage:
 ```console
-python prepare_data.py -tr train -ts orig wb styled texture -bs 150
+python prepare_data.py -tr train -ts orig wb styled texture -bs 250
 ```
 
-Console output
+Console output:
 ```
 ... (maybe some tensorflow warnings)
 
@@ -72,7 +72,7 @@ Usage:
 python prepare_only_test.py -ts orig wb styled texture
 ```
 
-Console output
+Console output:
 ```
 ... (maybe some tensorflow warnings)
 
@@ -102,7 +102,7 @@ Usage:
 python calculate.py -i 20 -bs 16 -sf pdf
 ```
 
-Console output
+Console output:
 
 ```
 ... (maybe some tensorflow warnings)
