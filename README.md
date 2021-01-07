@@ -4,7 +4,7 @@ Influence calculations based on tensorflow 2
 ![](https://imgur.com/twNmNHM.jpg)
 ![](https://imgur.com/heNuGVO.jpg)
 
-**Requirements**
+### Requirements
 
 - `tensorflow==2.3.1`
 - `keras==2.4.3`
@@ -14,7 +14,7 @@ Influence calculations based on tensorflow 2
 - `pillow==8.0.0`
 - `h5py==2.10.0`
 
-**Notes**
+### Notes
 
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
 - Added sumup gradients calculation to speed up a process;
