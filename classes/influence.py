@@ -5,6 +5,7 @@ import tensorflow as tf
 from keras.applications import VGG16
 from keras.applications.vgg16 import preprocess_input
 import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
 import os
 import time
@@ -42,6 +43,13 @@ class Influence:
         folder_labs = self.test_npz[f'test_{folder}_y']
         folder_unique_labels = np.unique(folder_labs)
 
+        folder_preds = pd.DataFrame(data={'image':[], 'predict':[]})
+        print('Calculate preds... ', end='')
+        for i in range(folder_data.shape[0]):
+            data = np.expand_dims(folder_data[i], axis=0)
+            folder_preds = folder_preds.append({'image':f'{folder}_{i}', 'predict': np.argmax(self.model.predict(data))}, ignore_index=True)
+    
+        
         output_base = 'calc_output'
 
         if not os.path.exists(output_base):
@@ -51,6 +59,13 @@ class Influence:
 
         if not os.path.exists(output_name):
             os.mkdir(output_name)
+
+        folder_preds['predict'] = folder_preds.predict.astype(np.int32)
+        folder_preds.to_csv(f'{output_name}/{folder}_preds.csv', index=False)
+        
+        del folder_preds
+        
+        print(f'finished: {output_name}/{folder}_preds.csv')
                      
         for label in folder_unique_labels:
             if not os.path.exists(f'{output_name}/{label}.npz'):
@@ -90,7 +105,7 @@ class Influence:
             os.remove(path)
                 
     def init_calc_instance(self, damping=1e-2):
-        self.calc_instance = InfluenceCalc(self.model, damping=damping, n_classes=self.n_classes)
+        self.calc_instance = InfluenceCalc(self.model, damping=damping)
     
     def calculate_all_influences(self, num_iter=30, batch_size=8, save_format='pdf', scale=1e3):
         
