@@ -145,6 +145,12 @@ class FolderParser:
         
         labelDictionary = np.load('labelsDict.npy', allow_pickle=True).tolist()
 
+        # create arrays from images and class labels for these images
+        # in "\train" folder we have unlabeled images. Let's use for them stochasticDataSet() function:
+
         trFiles =  self.createTrain((224, 224), 282, labelDictionary)
+
+        # in "\test" folder and folders with modified images already have class labels, so we use for them
+        # imagePreprocessing() function:
 
         tsFiles = self.createTest((224, 224))

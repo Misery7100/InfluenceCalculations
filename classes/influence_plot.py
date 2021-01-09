@@ -42,8 +42,7 @@ class InfluencePlot:
 			labels = self.train[f'train_y_{j}']
 			for i, image in enumerate(zip(data, labels)):
 				xt, yt = image
-				if yt != self.label:
-					continue
+				
 				xt = np.expand_dims(xt, axis=0)
 				yt = yt.reshape(1, -1)
 				

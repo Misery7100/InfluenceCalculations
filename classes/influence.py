@@ -43,11 +43,12 @@ class Influence:
         folder_labs = self.test_npz[f'test_{folder}_y']
         folder_unique_labels = np.unique(folder_labs)
 
-        folder_preds = pd.DataFrame(data={'image':[], 'predict':[]})
+        folder_preds = pd.DataFrame(data={'image':[], 'predict':[], 'label':[]})
         print('Calculate preds... ', end='')
         for i in range(folder_data.shape[0]):
             data = np.expand_dims(folder_data[i], axis=0)
-            folder_preds = folder_preds.append({'image':f'{folder}_{i}', 'predict': np.argmax(self.model.predict(data))}, ignore_index=True)
+            label = folder_labs[i][0]
+            folder_preds = folder_preds.append({'image':f'{folder}_{i}', 'predict': np.argmax(self.model.predict(data)), 'label':str(label)}, ignore_index=True)
     
         
         output_base = 'calc_output'
