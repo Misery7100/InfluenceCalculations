@@ -27,7 +27,7 @@ Influence calculations based on tensorflow 2
 ### Preprocessing data for test calculations
 1. Styled images: pre-trained model https://github.com/misgod/fast-neural-style-keras
 2. Textured image: additive software MATLAB with VGG19 CNN https://www.mathworks.com/help/images/neural-style-transfer-using-deep-learning.html
-3. Background removal: manual editing, cause pre-trained model don't show correct results on our images
+3. Background removal: manual editing
 
 ## Scripts description
 
