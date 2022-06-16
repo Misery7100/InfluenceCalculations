@@ -1,9 +1,10 @@
-
 import argparse
-from classes.influence import Influence
-import tensorflow as tf
+from src.workflow import Workflow
 from keras.applications import VGG16
+from keras.applications.vgg16 import preprocess_input
 import time
+
+# ------------------------- #
 
 if __name__ == '__main__':
 
@@ -27,7 +28,11 @@ if __name__ == '__main__':
 
 	# create Influence instance
 
-	influence = Influence(train_npz='train.npz', test_npz='test.npz', model=model) 
+	influence = Workflow(
+		train_npz='train.npz', 
+		test_npz='test.npz', 
+		model=model,
+		x_preproc=preprocess_input) 
 
 	start_time = time.time() # store start time
 

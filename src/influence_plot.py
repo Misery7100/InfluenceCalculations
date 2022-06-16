@@ -1,16 +1,26 @@
-from classes.influence_calc import InfluenceCalc, TqdmExtraFormat
-from classes.label_subset import LabelSubset
+from src.influence_calc import TqdmExtraFormat
 import tensorflow as tf
 import pandas as pd
 import os
-import time
-
 import matplotlib.pyplot as plt
 import numpy as np
 
-class InfluencePlot:
+# ------------------------- #
+
+class Plotter:
 	
-	def __init__(self, infcalc, train, test_data, test_label, label, n_batches):
+	def __init__(
+
+			self, 
+			infcalc, 
+			train, 
+			test_data, 
+			test_label, 
+			label, 
+			n_batches
+		
+		):
+
 		self.train = train
 		self.test_image = {'data': test_data, 'labels': test_label}
 		self.label = int(label)
@@ -19,7 +29,18 @@ class InfluencePlot:
 		self.ihvp = None
 		self.test_grads = None
 	
-	def calculate_ihvp(self, num_iter=21, scale=1e3, sb_size=8, parallel=True):
+	# ------------------------- #
+	
+	def calculate_ihvp(
+		
+			self, 
+			num_iter=21, 
+			scale=1e3, 
+			sb_size=8, 
+			parallel=True
+		
+		):
+
 		ihvp, test_grads = self.instance.calculate(
 													train=self.train, 
 													n_batches=self.n_batches,
@@ -32,6 +53,8 @@ class InfluencePlot:
 
 		self.ihvp = self.instance.flatten_tensor_elements(ihvp)
 		self.test_grads = self.instance.flatten_tensor_elements(test_grads)
+	
+	# ------------------------- #
 	
 	def calculate_influences(self):
 		influences = dict()
@@ -80,8 +103,11 @@ class InfluencePlot:
 			
 		return influences, layerwise
 	
+	# ------------------------- #
+	
 	# Restore from BGR image (vgg preproc) to RGB
 	def restore_image(self, img):
+
 		mean = [103.939, 116.779, 123.68]
 		img = img.copy()
 		# Zero-center by mean pixel
@@ -93,7 +119,10 @@ class InfluencePlot:
 
 		return img.astype(np.int16)
 	
+	# ------------------------- #
+
 	def get_influences(self, top=5, name='sample_name', format='png', save_to='sample_folder'):
+		
 		influences, layerwise = self.calculate_influences()
 		sort_infl = dict(sorted(influences.items(), key=lambda d: d[1]['total']))
 		lw_df = pd.DataFrame(data={

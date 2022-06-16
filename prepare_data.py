@@ -1,8 +1,7 @@
-
 import argparse
+from src.folder_parser import FolderParser
 
-from classes.folder_parser import FolderParser
-
+# ------------------------- #
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Image Processing')

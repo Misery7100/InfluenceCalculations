@@ -1,18 +1,15 @@
-from classes.influence_calc import InfluenceCalc, TqdmExtraFormat
-from classes.label_subset import LabelSubset
-from classes.influence_plot import InfluencePlot
-import tensorflow as tf
-from keras.applications import VGG16
+from src.influence_calc import InfluenceCalculation
+from src.label_subset import LabelSubset
+from src.influence_plot import Plotter
 from keras.applications.vgg16 import preprocess_input
-import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
 import os
+import pandas as pd
 import time
-import shutil
 
+# ------------------------- #
 
-class Influence:
+class Workflow:
     
     def __init__(self, train_npz, test_npz, model, x_preproc=preprocess_input, n_classes=1000):
         self.model = model
@@ -22,6 +19,8 @@ class Influence:
         self.test_npz = test_npz
         self.extract_data()
         self.init_calc_instance()
+    
+    # ------------------------- #
         
     def to_categorical(self, label):
         output = []
@@ -31,10 +30,14 @@ class Influence:
             output.append(enc)
         return np.array(output, dtype=np.int32)
     
+    # ------------------------- #
+    
     def extract_data(self):
         self.train_npz = np.load(self.train_npz)
         self.test_npz = np.load(self.test_npz)
         self.n_batches = int(len(self.train_npz.files) / 2)
+    
+    # ------------------------- #
     
     def calculate_folder(self, folder, num_iter, batch_size, save_format, scale=1e3):
         print(f'Calculating influences for folder: {folder}')
@@ -51,7 +54,7 @@ class Influence:
             folder_preds = folder_preds.append({'image':f'{folder}_{i}', 'predict': np.argmax(self.model.predict(data)), 'label':str(label)}, ignore_index=True)
     
         
-        output_base = 'calc_output'
+        output_base = 'output'
 
         if not os.path.exists(output_base):
             os.mkdir(output_base)
@@ -90,7 +93,7 @@ class Influence:
                 test_label = np.expand_dims(test_y[i], axis=0)
                 label_raw = labels[i]
 
-                plot = InfluencePlot(self.calc_instance, 
+                plot = Plotter(self.calc_instance, 
                                      train=self.train_npz,
                                      test_data=test_data, 
                                      test_label=test_label,
@@ -104,9 +107,13 @@ class Influence:
             
             path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, f'{output_name}/{label}.npz'))
             os.remove(path)
+    
+    # ------------------------- #
                 
     def init_calc_instance(self, damping=1e-2):
-        self.calc_instance = InfluenceCalc(self.model, damping=damping)
+        self.calc_instance = InfluenceCalculation(self.model, damping=damping)
+    
+    # ------------------------- #
     
     def calculate_all_influences(self, num_iter=30, batch_size=8, save_format='pdf', scale=1e3):
         

@@ -1,13 +1,20 @@
 import numpy as np
 
+# ------------------------- #
+
 class LabelSubset:
+
     def __init__(self, label, folder=''):
         self.label = label
         self.folder = folder
 
+    # ------------------------- #
+
     def extractLabels(self, imgArr, imgLabArr):
         res = imgArr[np.where(imgLabArr == self.label)[0]]
         return res
+    
+    # ------------------------- #
 
     def subsetByLabels(self, x, y):
 

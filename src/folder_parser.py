@@ -1,52 +1,59 @@
-import csv
-import os
-import tensorflow as tf
-import keras
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
-import numpy as np
-from tqdm import tqdm
 import math
+import os
+import numpy as np
 import random
+from tqdm import tqdm
+
+# ------------------------- #
 
 class FolderParser:
 
-    def __init__(self, args):
+    def __init__(self, parser_args):
         try:
-            self.trainDir = args.train
+            self.trainDir = parser_args.train
         except:
             self.trainDir = None
 
-        self.testDirList = args.test
+        self.testDirList = parser_args.test
 
         try:
-            self.batchSize = args.batchSize
+            self.batchSize = parser_args.batchSize
         except:
             self.batchSize = None
+    
+    # ------------------------- #
 
     def createDict(self):
 
-        dir_dict = {}
-
         list_dir = list(sorted(os.listdir(self.trainDir)))
-
-        for i, dir in enumerate(list_dir):
-            dir_dict[dir] = i
-
-
+        dir_dict = dict((dr, i) for i, dr in enumerate(list_dir))
         np.save('labelsDict.npy', dir_dict)
 
+    # ------------------------- #
 
     def batch(self, iterable):
+
         num = self.batchSize
         length = len(iterable)
-        out = []
-        for ndx in range(0, length, num):
-             out.append(iterable[ndx:min(ndx + num, length)])
-        
-        return out
+        out = [
+            iterable[ndx:min(ndx + num, length)]
+            for ndx in range(0, length, num)
+        ]
 
-    def createTrain(self, target_size=(224, 224), seed=282, dictionary=None):
+        return out
+    
+    # ------------------------- #
+
+    def createTrain(
+        
+            self, 
+            target_size=(224, 224), 
+            seed=282, 
+            dictionary=None
+        
+        ):
 
         dir_dict = dictionary
         img_subs_path = []
@@ -65,11 +72,12 @@ class FolderParser:
         random.seed(seed)
         random.shuffle(img_subs_path)
 
-        numIter = int(math.ceil(len(img_subs_path)/self.batchSize))
+        numIter = int(math.ceil(len(img_subs_path) / self.batchSize))
 
         exec_dir = []
         iterbl = self.batch(img_subs_path)
         i = 0
+
         for sbs in tqdm(iterbl, desc=f'Pack batches', ncols=100, ascii=' ▮', total=numIter,
                                 bar_format="{desc} | {percentage:.0f}% |{bar}{r_bar}"):
             img_subs_arr = []
@@ -94,8 +102,11 @@ class FolderParser:
         exec(f'np.savez("train", {exec_dir})')
 
         print('finished')
+    
+    # ------------------------- #
 
     def createTest(self, target_size=(224, 224)):
+
         list_dir = self.testDirList
         img_subs_path = []
         exec_dir = []
@@ -136,7 +147,7 @@ class FolderParser:
 
         print('finished')
 
-
+    # ------------------------- #
 
     def createZip(self):
 
@@ -145,6 +156,5 @@ class FolderParser:
         
         labelDictionary = np.load('labelsDict.npy', allow_pickle=True).tolist()
 
-        trFiles =  self.createTrain((224, 224), 282, labelDictionary)
-
-        tsFiles = self.createTest((224, 224))
+        self.createTrain((224, 224), 282, labelDictionary)
+        self.createTest((224, 224))

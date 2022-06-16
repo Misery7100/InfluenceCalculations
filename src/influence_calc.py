@@ -1,14 +1,13 @@
+from keras.applications.vgg16 import preprocess_input
 import numpy as np
 import tensorflow as tf
-import time
 from tensorflow.python.ops.math_ops import multiply as ops_mult
 from tensorflow.python.ops.array_ops import stop_gradient as stop_grad
-from keras.losses import categorical_crossentropy
-from keras.applications.vgg16 import preprocess_input
+import time
 from tqdm import tqdm
 
+# ------------------------- #
 
-# progress bar class (wrapper)
 class TqdmExtraFormat(tqdm):
     
     @property
@@ -18,10 +17,21 @@ class TqdmExtraFormat(tqdm):
         d.update(total_time=self.format_interval(total_time) + " est.")
         return d
 
-# main class
-class InfluenceCalc:
+# ------------------------- #
 
-    def __init__(self, model=None, loss=lambda l, p: tf.norm(l - p), damping=1e-4, n_classes=1000, preprocess_input=preprocess_input):
+class InfluenceCalculation:
+
+    def __init__(
+        
+            self, 
+            model=None, 
+            loss=lambda l, p: tf.norm(l - p), 
+            damping=1e-4, 
+            n_classes=1000, 
+            preprocess_input=preprocess_input
+        
+        ):
+
         if model is None:
             raise ValueError('model cannot be NoneType') # raise error if no model
             
@@ -34,9 +44,13 @@ class InfluenceCalc:
         self.preprocess_input = preprocess_input
         self.test_grad = None
     
+    # ------------------------- #
+    
     # elemwise product with gradient stopping
     def elementwise_products(self, grad, eigv):
         return [ops_mult(g, stop_grad(v)) for g, v in zip(grad, eigv) if g is not None]
+    
+    # ------------------------- #
     
     # get gradient on prediction with gradient vanishing
     def gradient(self, data, label, weights, training=True):
@@ -45,10 +59,14 @@ class InfluenceCalc:
             loss = self.loss(label, predict) # calculate basic loss 
         return t.gradient(loss, weights) 
     
+    # ------------------------- #
+
     # filtering None
     def replace_nones(self, grads):
         return [g if g is not None else tf.zeros_like(p) for p, g in zip(self.weights, grads)]
     
+    # ------------------------- #
+
     # calculate gradients separately for each trainable variable in NN
     def separate_gradients(self, tape, ep):
         sep_grds = []
@@ -59,6 +77,8 @@ class InfluenceCalc:
         del ep
         return sep_grds
     
+    # ------------------------- #
+
     # hvp with parallel allowing
     def hessian_vector_products(self, data, labels, eigv, parallel):
         grads_no_nones = []
@@ -99,6 +119,8 @@ class InfluenceCalc:
                 del separate_grads
             return grads_no_nones
     
+    # ------------------------- #
+
     # one iteration of ihvp calculating
     def ihvp_iteration(self, data, labels, cur_v, test_gradient, batch_size, batch_range, scale, parallel):
         rand_idx = np.random.randint(batch_range, size=[batch_size]) # get a random core for stochastic estimation
@@ -106,6 +128,8 @@ class InfluenceCalc:
         new_ihvp = [g + self.damping*v - hv / scale for g, hv, v in zip(test_gradient, iter_grads, cur_v)] # calculate new ihvp tensors
 
         return new_ihvp
+
+    # ------------------------- #
 
     def to_categorical(self, label):
         output = []
@@ -115,6 +139,8 @@ class InfluenceCalc:
             output.append(enc)
         return np.array(output, dtype=np.int32)
     
+    # ------------------------- #
+
     # main function of ihvp calculating
     def inverse_hessian_vector_products(self, train, n_batches, test_data, test_label,
                                        num_iter=101, stochast_batch_size=8,
@@ -152,6 +178,8 @@ class InfluenceCalc:
         
         return current_ihvp
     
+    # ------------------------- #
+
     # calculate ihvp for each layer (wrapper)
     def calculate(self, train, n_batches, test_data, test_label, num_iter=101, 
                   stochast_batch_size=8, scale=1e3, parallel=True):
@@ -162,9 +190,13 @@ class InfluenceCalc:
                                                     scale=scale, parallel=parallel)
         return ihvp, self.test_grad
 
+    # ------------------------- #
+
     #helper makes elements in tensor (0 axis) flatten
     def flatten_tensor_elements(self, tensor):
         return [tf.reshape(a, (-1,)) for a in tensor]
+
+    # ------------------------- #
 
     #helper makes full flat tensor
     def flatten_tensor(self, tensor):

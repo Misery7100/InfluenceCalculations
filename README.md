@@ -4,16 +4,6 @@ Influence calculations based on tensorflow 2
 ![](https://imgur.com/twNmNHM.jpg)
 ![](https://imgur.com/heNuGVO.jpg)
 
-### Requirements
-
-- `tensorflow==2.3.1`
-- `keras==2.4.3`
-- `tqdm==4.50.2`
-- `numpy==1.18.5`
-- `matplotlib==3.3.1`
-- `pillow==8.0.0`
-- `h5py==2.10.0`
-
 ### Notes
 
 - There no eigenvalues calculations because calculated eigenvalues just converges (in limit) to scale parameter and it doesn't make sense to calculate them;
